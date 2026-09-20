@@ -1,0 +1,38 @@
+name: Build APK
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: تحميل المشروع
+        uses: actions/checkout@v4
+
+      - name: فك ملف ZIP
+        run: |
+          mkdir project
+          unzip -q *.zip -d project
+
+      - name: البحث عن مشروع Android
+        run: |
+          GRADLEW=$(find project -name gradlew -type f | head -n 1)
+          if [ -z "$GRADLEW" ]; then
+            echo "لم يتم العثور على مشروع Android داخل ملف ZIP"
+            exit 1
+          fi
+          chmod +x "$GRADLEW"
+          echo "GRADLEW=$GRADLEW" >> $GITHUB_ENV
+
+      - name: بناء APK
+        run: |
+          cd "$(dirname "$GRADLEW")"
+          ./gradlew assembleDebug
+
+      - name: رفع APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: APK
+          path: "**/build/outputs/apk/**/*.apk"
