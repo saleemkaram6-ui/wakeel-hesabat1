@@ -14,8 +14,7 @@ jobs:
       - name: فك ملف ZIP
         run: |
           mkdir project
-          unzip -q *.zip -d project
-
+unzip -q wakeel-hesabat-android-v2.zip -d project
       - name: البحث عن مشروع Android
         run: |
           GRADLEW=$(find project -name gradlew -type f | head -n 1)
