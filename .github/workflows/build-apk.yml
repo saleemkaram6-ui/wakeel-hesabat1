@@ -1,4 +1,4 @@
-name: Build Wakeel Hesabat v7.3 reaction status APK
+name: Build Rasid v7.4 modern navigation APK
 on:
   workflow_dispatch:
 jobs:
@@ -9,7 +9,7 @@ jobs:
       - name: Unpack V7.3 project
         run: |
           mkdir -p android-project
-          unzip -q rasid-v7-3-standalone-source.zip -d android-project
+          unzip -q rasid-v7-4-modern-source.zip -d android-project
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
@@ -30,6 +30,6 @@ jobs:
         run: gradle -p android-project assembleDebug --no-daemon
       - uses: actions/upload-artifact@v4
         with:
-          name: rasid-v7-3-standalone-apk
+          name: rasid-v7-4-modern-apk
           path: android-project/app/build/outputs/apk/debug/app-debug.apk
           if-no-files-found: error
