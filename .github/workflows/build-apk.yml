@@ -1,34 +1,27 @@
-name: Build V2 APK
+name: Build Wakeel Hesabat test APK
 on:
   workflow_dispatch:
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-      - name: Unzip V2 project
+      - uses: actions/checkout@v4
+      - name: Unpack current project
         run: |
           mkdir -p android-project
-          unzip -o wakeel-hesabat-android-v2.zip -d android-project
-      - name: Set up Java
-        uses: actions/setup-java@v4
+          unzip -q wakeel-hesabat-group-discount-source.zip -d android-project
+      - uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: '17'
-      - name: Set up Gradle
-        uses: gradle/actions/setup-gradle@v4
+      - uses: android-actions/setup-android@v3
+      - uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: '8.7'
       - name: Build APK
-        run: |
-          cd android-project
-          PROJECT_DIR=$(dirname "$(find . \( -name settings.gradle -o -name settings.gradle.kts \) | head -1)")
-          echo "Project directory: $PROJECT_DIR"
-          cd "$PROJECT_DIR"
-          gradle assembleDebug
-      - name: Upload V2 APK
-        uses: actions/upload-artifact@v4
+        run: gradle -p android-project assembleDebug --no-daemon
+      - uses: actions/upload-artifact@v4
         with:
-          name: wakeel-hesabat-v2-apk
-          path: android-project/**/build/outputs/apk/debug/*.apk
+          name: wakeel-hesabat-test-apk
+          path: android-project/app/build/outputs/apk/debug/app-debug.apk
+          if-no-files-found: error
