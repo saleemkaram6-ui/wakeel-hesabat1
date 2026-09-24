@@ -1,4 +1,4 @@
-name: Build Wakeel Hesabat v7.2 reaction status APK
+name: Build Wakeel Hesabat v7.3 reaction status APK
 on:
   workflow_dispatch:
 jobs:
@@ -6,10 +6,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Unpack V7.2 project
+      - name: Unpack V7.3 project
         run: |
           mkdir -p android-project
-          unzip -q wakeel-hesabat-v7-2-reaction-status-source.zip -d android-project
+          unzip -q wakeel-hesabat-v7-3-reaction-report-source.zip -d android-project
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
@@ -30,6 +30,6 @@ jobs:
         run: gradle -p android-project assembleDebug --no-daemon
       - uses: actions/upload-artifact@v4
         with:
-          name: wakeel-hesabat-v7-2-reaction-status-apk
+          name: wakeel-hesabat-v7-3-reaction-report-apk
           path: android-project/app/build/outputs/apk/debug/app-debug.apk
           if-no-files-found: error
