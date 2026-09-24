@@ -1,4 +1,4 @@
-name: Build Wakeel Hesabat test APK
+name: Build Wakeel Hesabat standalone test APK
 on:
   workflow_dispatch:
 jobs:
@@ -10,6 +10,8 @@ jobs:
         run: |
           mkdir -p android-project
           unzip -q wakeel-hesabat-group-discount-source.zip -d android-project
+          sed -i "s/applicationId 'com.wakeel.hesabat'/applicationId 'com.wakeel.hesabat.probe'/" android-project/app/build.gradle
+          grep applicationId android-project/app/build.gradle
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
@@ -21,6 +23,6 @@ jobs:
         run: gradle -p android-project assembleDebug --no-daemon
       - uses: actions/upload-artifact@v4
         with:
-          name: wakeel-hesabat-test-apk
+          name: wakeel-hesabat-standalone-test-apk
           path: android-project/app/build/outputs/apk/debug/app-debug.apk
           if-no-files-found: error
