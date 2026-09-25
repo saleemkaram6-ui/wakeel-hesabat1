@@ -1,4 +1,4 @@
-name: Build Rasid v7.5.1 APK
+name: Build Rasid v7.5.2 APK
 on:
   workflow_dispatch:
 jobs:
@@ -6,10 +6,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Unpack Rasid v7.5.1 project
+      - name: Unpack Rasid v7.5.2 project
         run: |
           mkdir -p android-project
-          unzip -q rasid-v7-5-1-repeat-fix-source.zip -d android-project
+          unzip -q rasid-v7-5-2-toolbar-source.zip -d android-project
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
@@ -29,6 +29,6 @@ jobs:
         run: gradle -p android-project assembleDebug --no-daemon
       - uses: actions/upload-artifact@v4
         with:
-          name: rasid-v7-5-1-apk
+          name: rasid-v7-5-2-apk
           path: android-project/app/build/outputs/apk/debug/app-debug.apk
           if-no-files-found: error
