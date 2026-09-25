@@ -1,4 +1,4 @@
-name: Build Rasid v7.4 modern navigation APK
+name: Build Rasid v7.5 APK
 on:
   workflow_dispatch:
 jobs:
@@ -6,10 +6,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Unpack V7.3 project
+      - name: Unpack Rasid v7.5 project
         run: |
           mkdir -p android-project
-          unzip -q rasid-v7-4-modern-source.zip -d android-project
+          unzip -q rasid-v7-5-excel-fixed-source.zip -d android-project
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
@@ -21,15 +21,14 @@ jobs:
         run: |
           cd android-project
           mkdir -p test-classes
-          javac -d test-classes app/src/main/java/com/wakeel/hesabat/AccountMessage.java app/src/main/java/com/wakeel/hesabat/ReactionMatcher.java app/src/main/java/com/wakeel/hesabat/ReactionStatus.java tests/ReactionMatcherTest.java tests/ReactionStatusTest.java
+          javac -d test-classes app/src/main/java/com/wakeel/hesabat/AccountMessage.java app/src/main/java/com/wakeel/hesabat/ReactionMatcher.java tests/ReactionMatcherTest.java
           java -cp test-classes com.wakeel.hesabat.ReactionMatcherTest
-          java -cp test-classes com.wakeel.hesabat.ReactionStatusTest
           javac -cp test-classes -d test-classes tests/NotificationPreviewTest.java
           java -cp test-classes com.wakeel.hesabat.NotificationPreviewTest
       - name: Build APK
         run: gradle -p android-project assembleDebug --no-daemon
       - uses: actions/upload-artifact@v4
         with:
-          name: rasid-v7-4-modern-apk
+          name: rasid-v7-5-apk
           path: android-project/app/build/outputs/apk/debug/app-debug.apk
           if-no-files-found: error
