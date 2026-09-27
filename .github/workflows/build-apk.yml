@@ -1,4 +1,4 @@
-name: Build Rasid v7.5.2 APK
+name: Build Rasid v7.5.5 APK
 on:
   workflow_dispatch:
 jobs:
@@ -6,10 +6,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Unpack Rasid v7.5.2 project
+      - name: Unpack Rasid v7.5.5 project
         run: |
           mkdir -p android-project
-          unzip -q rasid-v7-5-2-toolbar-source.zip -d android-project
+          unzip -q rasid-v7-5-5-source.zip -d android-project
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
@@ -21,7 +21,7 @@ jobs:
         run: |
           cd android-project
           mkdir -p test-classes
-          javac -d test-classes app/src/main/java/com/wakeel/hesabat/AccountMessage.java app/src/main/java/com/wakeel/hesabat/ReactionMatcher.java app/src/main/java/com/wakeel/hesabat/MessageIdentity.java tests/ReactionMatcherTest.java tests/NotificationPreviewTest.java tests/MessageIdentityTest.java
+          javac -encoding UTF-8 -d test-classes app/src/main/java/com/wakeel/hesabat/AccountMessage.java app/src/main/java/com/wakeel/hesabat/ReactionMatcher.java app/src/main/java/com/wakeel/hesabat/MessageIdentity.java tests/ReactionMatcherTest.java tests/NotificationPreviewTest.java tests/MessageIdentityTest.java
           java -cp test-classes com.wakeel.hesabat.ReactionMatcherTest
           java -cp test-classes com.wakeel.hesabat.NotificationPreviewTest
           java -cp test-classes com.wakeel.hesabat.MessageIdentityTest
@@ -29,6 +29,6 @@ jobs:
         run: gradle -p android-project assembleDebug --no-daemon
       - uses: actions/upload-artifact@v4
         with:
-          name: rasid-v7-5-2-apk
+          name: rasid-v7-5-5-apk
           path: android-project/app/build/outputs/apk/debug/app-debug.apk
           if-no-files-found: error
